@@ -633,14 +633,16 @@ app.get('/restart_tunnel_page', isAuthenticated, (req, res) => {
 
 app.post('/restart_tunnel', isAuthenticated, async (req, res) => {
     try {
-        const { stdout, stderr } = await execPromise('sudo systemctl restart gost_0.service');
-        if (stderr) {
-            req.session.restart_message = 'Restart tunnel failed';
-            req.session.restart_alertType = 'danger';
-        } else {
-            req.session.restart_message = 'تـانل گـاسـت بـا مـوفـقـیـت راه انـدازی شـد ✅';
-            req.session.restart_alertType = 'success';
+        const { stdout: reloadStdout, stderr: reloadStderr } = await execPromise('sudo systemctl daemon-reload');
+        if (reloadStderr) {
+            throw new Error(reloadStderr);
         }
+        const { stdout: restartStdout, stderr: restartStderr } = await execPromise('sudo systemctl restart gost_0.service');
+        if (restartStderr) {
+            throw new Error(restartStderr);
+        }
+        req.session.restart_message = 'تـانل گـاسـت بـا مـوفـقـیـت راه انـدازی شـد ✅';
+        req.session.restart_alertType = 'success';
     } catch (err) {
         req.session.restart_message = 'Restart tunnel failed';
         req.session.restart_alertType = 'danger';
@@ -1987,7 +1989,7 @@ cat <<'EOF' | sudo tee "$TEMPLATES_DIR/install_gost.ejs" >/dev/null || { echo -e
             let panel_ips = this.value.split(',').filter(ip => ip.trim());
             let existingRandomGroups = form.querySelectorAll('.form-group');
             existingRandomGroups.forEach(group => {
-                if (group.querySelector('label') && group.querySelector('label').textContent.startsWith('Random Port')) {
+                if (group.querySelector('label') && group.querySelector('label').textContent.startsWith(' یک پورت رندوم وارد کنید ')) {
                     group.remove();
                 }
             });
