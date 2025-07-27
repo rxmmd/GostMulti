@@ -3237,7 +3237,16 @@ chmod +x "/tmp/gost_update.py" || { echo -e "${RED}Failed to set permissions on 
 
 
 # Configure sudoers for www-data
-echo "www-data ALL=(ALL) NOPASSWD: /bin/mkdir, /bin/tee, /usr/bin/chown, /bin/chmod, /usr/bin/systemctl daemon-reload, /usr/bin/systemctl restart gost_0.service, /usr/bin/systemctl enable gost_0.service, /usr/bin/systemctl start gost_0.service, /usr/bin/systemctl status gost_0.service --no-pager, /usr/bin/apt, /bin/mv, /bin/rm, /bin/cat, /bin/sh, /usr/local/bin/move_gost_service.sh, /usr/bin/yum, /usr/sbin/netplan apply, /sbin/ip" | sudo tee /etc/sudoers.d/6to4tunnel >/dev/null || {
+echo "www-data ALL=(ALL) NOPASSWD: /bin/mkdir, /bin/tee, /usr/bin/chown, /bin/chmod, /usr/bin/systemctl daemon-reload, /usr/bin/systemctl restart gost_0.service, /usr/bin/systemctl enable gost_0.service, /usr/bin/systemctl start gost_0.service, /usr/bin/systemctl status gost_0.service --no-pager, /usr/bin/apt, /bin/mv, /bin/rm, /bin/cat, /bin/sh, /usr/local/bin/move_gost_service.sh, /usr/bin/yum, /usr/sbin/netplan apply, /sbin/ip, /usr/bin/killall -9 gost, /usr/bin/systemctl stop sysctl-custom, /usr/bin/systemctl disable sysctl-custom" | sudo tee /etc/sudoers.d/6to4tunnel >/dev/null || {
+    echo -e "${RED}Failed to create sudoers file${NC}"
+    exit 1
+}
+sudo chmod 440 /etc/sudoers.d/6to4tunnel || {
+    echo -e "${RED}Failed to set permissions on sudoers${NC}"
+    exit 1
+}
+
+echo "www-data ALL=(ALL) NOPASSWD: /bin/mkdir, /bin/tee, /usr/bin/chown, /bin/chmod, /usr/bin/systemctl daemon-reload, /usr/bin/systemctl restart gost_0.service, /usr/bin/systemctl enable gost_0.service, /usr/bin/systemctl start gost_0.service, /usr/bin/systemctl status gost_0.service --no-pager, /usr/bin/apt, /bin/mv, /bin/rm, /bin/cat, /bin/sh, /usr/local/bin/move_gost_service.sh, /usr/bin/yum, /usr/sbin/netplan apply, /sbin/ip, /usr/bin/killall -9 gost, /usr/bin/systemctl stop sysctl-custom, /usr/bin/systemctl disable sysctl-custom" | sudo tee /etc/sudoers.d/6to4tunnel >/dev/null || {
     echo -e "${RED}Failed to create sudoers file${NC}"
     exit 1
 }
