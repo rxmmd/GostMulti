@@ -1392,7 +1392,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/configure_iran_server.ejs" >/dev/null || { 
           <input type="text" name="tunnel_name" class="form-control" required>
       </div>
       <div class="form-group">
-          <label>آپی سرور خارج : </label>
+          <label>آیپی سرور خارج : </label>
           <input type="text" name="remote_ip" class="form-control" required>
       </div>
       <div class="form-group">
