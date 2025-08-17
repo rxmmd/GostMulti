@@ -906,143 +906,138 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/login.ejs" >/dev/null || { echo -e "${RED}F
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>6to4 Tunnel Manager - Login</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @font-face {
-      font-family: "Vazirmatn";
-      src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "Vazirmatn";
-      src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
-      font-weight: bold;
-      font-style: normal;
-      font-display: swap;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6to4 Tunnel Manager - Login</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
 
-    body {
-      font-family: "Vazirmatn", sans-serif;
-      direction: rtl;
-      background-color: var(--background-dark);
-      color: var(--text-primary);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 40px 20px;
-      box-sizing: border-box;
-      position: relative;
-      background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), 
-                        radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
-      background-attachment: fixed;
-    }
+  body {
+    font-family: "Vazirmatn", sans-serif;
+    direction: rtl;
+    background: #2a1a3d;
+    background-attachment: fixed;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    position: relative;
+  }
 
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                  radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: -1;
-    }
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
 
+  .main-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+  }
+
+  .form-group {
+    margin-bottom: 30px;
+  }
+
+  label {
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  input.form-control {
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    width: 100%;
+  }
+
+  button.btn-primary {
+    padding: 15px 30px;
+    background: rgba(138, 43, 226, 0.3);
+    border-radius: 15px;
+    transition: all 0.3s;
+    margin-top: 20px;
+  }
+
+  button.btn-primary:hover {
+    background: rgba(138, 43, 226, 0.5);
+  }
+
+  .alert {
+    margin-bottom: 30px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
     .main-container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(25px) saturate(180%);
-      -webkit-backdrop-filter: blur(25px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      padding: 50px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      max-width: 600px;
-      width: 100%;
-      text-align: center;
-      position: relative;
+      padding: 30px;
     }
-
     .form-group {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
-
-    label {
-      margin-bottom: 10px;
-      display: block;
-      color: var(--text-secondary);
-    }
-
-    input.form-control {
-      padding: 15px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      width: 100%;
-    }
-
-    button.btn-primary {
-      padding: 15px 30px;
-      background: var(--primary-color);
-      border-radius: 15px;
-      transition: all 0.3s;
-      margin-top: 20px;
-    }
-
-    button.btn-primary:hover {
-      background: var(--primary-dark);
-    }
-
-    .alert {
-      margin-bottom: 30px;
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    @media (max-width: 768px) {
-      .main-container {
-        padding: 30px;
-      }
-      .form-group {
-        margin-bottom: 20px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="main-container">
-    <h2 style="margin-bottom: 30px;">ورود بـه پـنـل مـدیـریـت 💻</h2>
-    <% if (message) { %>
+<div class="main-container">
+  <h2 style="margin-bottom: 30px;">ورود بـه پـنـل مـدیـریـت 💻</h2>
+  <% if (message) { %>
       <div class="alert alert-danger">
-        نام کاربری یا رمز عبور اشتباه است ❌
+          نام کاربری یا رمز عبور اشتباه است ❌
       </div>
-    <% } %>
-    <form method="POST" action="/login">
+  <% } %>
+  <form method="POST" action="/login">
       <div class="form-group">
-        <label>نـام کـاربـری : 👤</label>
-        <input type="text" name="username" class="form-control" required>
+          <label>نـام کـاربـری : 👤</label>
+          <input type="text" name="username" class="form-control" required>
       </div>
       <div class="form-group">
-        <label>پـسـوورد : 🔑</label>
-        <input type="password" name="password" class="form-control" required>
+          <label>پـسـوورد : 🔑</label>
+          <input type="password" name="password" class="form-control" required>
       </div>
       <button type="submit" class="btn btn-primary">ورود 📲</button>
-    </form>
-  </div>
+  </form>
+</div>
 </body>
 </html>
-
 EOF
-
 
     # Create index EJS template
 # Replace the entire cat <<EOF block for "$TEMPLATES_DIR/index.ejs" with this:
