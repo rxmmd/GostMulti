@@ -908,131 +908,203 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/login.ejs" >/dev/null || { echo -e "${RED}F
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6to4 Tunnel Manager - Login</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>ورود به سیستم</title>
 <style>
-  @font-face {
-    font-family: "Vazirmatn";
-    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Vazirmatn";
-    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
+:root {
+  --primary-color: #9c27b0;
+  --primary-light: #bb86fc;
+  --primary-dark: #6a0dad;
+  --background-dark: #121212;
+  --surface-dark: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --error-color: #cf6679;
+  --success-color: #03dac6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Vazirmatn", "Tahoma", sans-serif;
+}
+
+body {
+  background-color: var(--background-dark);
+  color: var(--text-primary);
+  direction: rtl;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+  background-attachment: fixed;
+}
+
+.container {
+  width: 90%;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 16px;
+  background: rgba(30, 30, 30, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+  color: var(--primary-light);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3);
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.alert-danger {
+  background: rgba(207, 102, 121, 0.2);
+  border-left: 4px solid var(--error-color);
+  color: var(--error-color);
+}
+
+.alert-success {
+  background: rgba(3, 218, 198, 0.2);
+  border-left: 4px solid var(--success-color);
+  color: var(--success-color);
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 1.5rem;
   }
 
-  body {
-    font-family: "Vazirmatn", sans-serif;
-    direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
+  h1 {
+    font-size: 1.5rem;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
+  input[type="text"],
+  input[type="password"],
+  button {
+    padding: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
     width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 12px;
   }
 
-  .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    max-width: 600px;
-    width: 100%;
-    text-align: center;
-    position: relative;
+  h1 {
+    font-size: 1.3rem;
   }
 
   .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 1rem;
   }
+}
 
-  label {
-    margin-bottom: 10px;
-    display: block;
-  }
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
-  input.form-control {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    width: 100%;
-  }
-
-  button.btn-primary {
-    padding: 15px 30px;
-    background: rgba(138, 43, 226, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
-    margin-top: 20px;
-  }
-
-  button.btn-primary:hover {
-    background: rgba(138, 43, 226, 0.5);
-  }
-
-  .alert {
-    margin-bottom: 30px;
-    padding: 15px;
-    border-radius: 10px;
-  }
-
-  @media (max-width: 768px) {
-    .main-container {
-      padding: 30px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-  }
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
 </style>
 </head>
 <body>
-<div class="main-container">
-  <h2 style="margin-bottom: 30px;">ورود بـه پـنـل مـدیـریـت 💻</h2>
+<div class="container">
+  <h1>ورود به سیستم</h1>
   <% if (message) { %>
-      <div class="alert alert-danger">
-          نام کاربری یا رمز عبور اشتباه است ❌
+      <div class="alert alert-<%= alertType %>">
+          <%= message %>
       </div>
   <% } %>
   <form method="POST" action="/login">
       <div class="form-group">
-          <label>نـام کـاربـری : 👤</label>
-          <input type="text" name="username" class="form-control" required>
+          <label>نام کاربری:</label>
+          <input type="text" name="username" required>
       </div>
       <div class="form-group">
-          <label>پـسـوورد : 🔑</label>
-          <input type="password" name="password" class="form-control" required>
+          <label>رمز عبور:</label>
+          <input type="password" name="password" required>
       </div>
-      <button type="submit" class="btn btn-primary">ورود 📲</button>
+      <button type="submit">ورود 🔐</button>
   </form>
 </div>
 </body>
