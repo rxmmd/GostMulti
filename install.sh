@@ -902,6 +902,7 @@ EOF
 # Replace the entire cat <<EOF block for "$TEMPLATES_DIR/login.ejs" with this:
 # Replace the entire cat <<EOF block for "$TEMPLATES_DIR/login.ejs" with this:
 
+cat <<EOF | sudo tee "$TEMPLATES_DIR/login.ejs" >/dev/null || { echo -e "${RED}Failed to create login.ejs${NC}"; exit 1; }
 <!DOCTYPE html>
 <html lang="fa">
 <head>
@@ -1039,6 +1040,8 @@ EOF
   </div>
 </body>
 </html>
+
+EOF
 
 
     # Create index EJS template
