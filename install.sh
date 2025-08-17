@@ -908,203 +908,131 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/login.ejs" >/dev/null || { echo -e "${RED}F
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ورود به سیستم</title>
+<title>6to4 Tunnel Manager - Login</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
-:root {
-  --primary-color: #9c27b0;
-  --primary-light: #bb86fc;
-  --primary-dark: #6a0dad;
-  --background-dark: #121212;
-  --surface-dark: #1e1e1e;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --error-color: #cf6679;
-  --success-color: #03dac6;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Vazirmatn", "Tahoma", sans-serif;
-}
-
-body {
-  background-color: var(--background-dark);
-  color: var(--text-primary);
-  direction: rtl;
-  line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
-  background-attachment: fixed;
-}
-
-.container {
-  width: 90%;
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 16px;
-  background: rgba(30, 30, 30, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-h1 {
-  color: var(--primary-light);
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 1.8rem;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--text-secondary);
-}
-
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus {
-  outline: none;
-  border-color: var(--primary-light);
-  box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3);
-}
-
-input[type="text"]::placeholder,
-input[type="password"]::placeholder {
-  color: rgba(255, 255, 255, 0.3);
-}
-
-button {
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  display: block;
-  width: 100%;
-  margin-top: 1rem;
-}
-
-button:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
-}
-
-.alert {
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  line-height: 1.5;
-}
-
-.alert-danger {
-  background: rgba(207, 102, 121, 0.2);
-  border-left: 4px solid var(--error-color);
-  color: var(--error-color);
-}
-
-.alert-success {
-  background: rgba(3, 218, 198, 0.2);
-  border-left: 4px solid var(--success-color);
-  color: var(--success-color);
-}
-
-@media (max-width: 768px) {
-  .container {
-    width: 95%;
-    padding: 1.5rem;
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
   }
 
-  h1 {
-    font-size: 1.5rem;
+  body {
+    font-family: "Vazirmatn", sans-serif;
+    direction: rtl;
+    background: #2a1a3d;
+    background-attachment: fixed;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    position: relative;
   }
 
-  input[type="text"],
-  input[type="password"],
-  button {
-    padding: 0.7rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 1rem;
-    margin: 1rem;
-    border-radius: 12px;
+    height: 100%;
+    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
   }
 
-  h1 {
-    font-size: 1.3rem;
+  .main-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    position: relative;
   }
 
   .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 30px;
   }
-}
 
-@font-face {
-  font-family: "Vazirmatn";
-  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+  label {
+    margin-bottom: 10px;
+    display: block;
+  }
 
-@font-face {
-  font-family: "Vazirmatn";
-  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
+  input.form-control {
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    width: 100%;
+  }
+
+  button.btn-primary {
+    padding: 15px 30px;
+    background: rgba(138, 43, 226, 0.3);
+    border-radius: 15px;
+    transition: all 0.3s;
+    margin-top: 20px;
+  }
+
+  button.btn-primary:hover {
+    background: rgba(138, 43, 226, 0.5);
+  }
+
+  .alert {
+    margin-bottom: 30px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .main-container {
+      padding: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+  }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>ورود به سیستم</h1>
+<div class="main-container">
+  <h2 style="margin-bottom: 30px;">ورود بـه پـنـل مـدیـریـت 💻</h2>
   <% if (message) { %>
-      <div class="alert alert-<%= alertType %>">
-          <%= message %>
+      <div class="alert alert-danger">
+          نام کاربری یا رمز عبور اشتباه است ❌
       </div>
   <% } %>
   <form method="POST" action="/login">
       <div class="form-group">
-          <label>نام کاربری:</label>
-          <input type="text" name="username" required>
+          <label>نـام کـاربـری : 👤</label>
+          <input type="text" name="username" class="form-control" required>
       </div>
       <div class="form-group">
-          <label>رمز عبور:</label>
-          <input type="password" name="password" required>
+          <label>پـسـوورد : 🔑</label>
+          <input type="password" name="password" class="form-control" required>
       </div>
-      <button type="submit">ورود 🔐</button>
+      <button type="submit" class="btn btn-primary">ورود 📲</button>
   </form>
 </div>
 </body>
@@ -1119,159 +1047,186 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/index.ejs" >/dev/null || { echo -e "${RED}F
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مدیریت سرور</title>
+<title>6to4 Tunnel Manager</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
-:root {
-  --primary-color: #9c27b0;
-  --primary-light: #bb86fc;
-  --primary-dark: #6a0dad;
-  --background-dark: #121212;
-  --surface-dark: #1e1e1e;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --error-color: #cf6679;
-  --success-color: #03dac6;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Vazirmatn", "Tahoma", sans-serif;
-}
-
-body {
-  background-color: var(--background-dark);
-  color: var(--text-primary);
-  direction: rtl;
-  line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
-  background-attachment: fixed;
-}
-
-.container {
-  width: 90%;
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 16px;
-  background: rgba(30, 30, 30, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-h1 {
-  color: var(--primary-light);
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 1.8rem;
-}
-
-.nav-button {
-  display: block;
-  width: 100%;
-  padding: 0.8rem 1rem;
-  margin-bottom: 1rem;
-  background: var(--primary-color);
-  color: var(--text-primary);
-  text-align: center;
-  text-decoration: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.nav-button:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
-}
-
-.alert {
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  line-height: 1.5;
-}
-
-.alert-danger {
-  background: rgba(207, 102, 121, 0.2);
-  border-left: 4px solid var(--error-color);
-  color: var(--error-color);
-}
-
-.alert-success {
-  background: rgba(3, 218, 198, 0.2);
-  border-left: 4px solid var(--success-color);
-  color: var(--success-color);
-}
-
-@media (max-width: 768px) {
-  .container {
-    width: 95%;
-    padding: 1.5rem;
+  /* Custom Font: Vazirmatn */
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
   }
 
-  h1 {
-    font-size: 1.5rem;
+  body {
+    font-family: "Vazirmatn", sans-serif;
+    direction: rtl;
+    background: #2a1a3d;
+    background-attachment: fixed;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    position: relative;
   }
 
-  .nav-button {
-    padding: 0.7rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 1rem;
-    margin: 1rem;
-    border-radius: 12px;
+    height: 100%;
+    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .main-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+
+  .menu-button {
+    padding: 18px 35px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .menu-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s;
+  }
+
+  .menu-button:hover::before,
+  .menu-button.active::before {
+    left: 100%;
+  }
+
+  .menu-button:hover,
+  .menu-button.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(138, 43, 226, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .menu-button:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 4px rgba(138, 43, 226, 0.3), 0 8px 30px rgba(138, 43, 226, 0.2);
+  }
+
+  .menu-button.btn-danger {
+    background: rgba(220, 53, 69, 0.3);
+  }
+
+  .menu-button.btn-danger:hover {
+    background: rgba(220, 53, 69, 0.5);
   }
 
   h1 {
-    font-size: 1.3rem;
+    margin-bottom: 30px;
   }
-}
 
-@font-face {
-  font-family: "Vazirmatn";
-  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+  h3 {
+    margin-bottom: 15px;
+    margin-top: 30px;
+    font-weight: bold;
+  }
 
-@font-face {
-  font-family: "Vazirmatn";
-  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
+  .operations-other {
+    font-size: 1.2rem;
+    font-weight: bolder;
+  }
+
+  .alert {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .main-container {
+      padding: 25px;
+    }
+    .menu-button {
+      padding: 15px 25px;
+      font-size: 1rem;
+      border-radius: 25px;
+    }
+  }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>مدیریت سرور</h1>
+<div class="main-container">
+  <h1>تـانـل گـاسـت مـولـتـی لـوکـیـشـن 📡</h1>
   <% if (message) { %>
       <div class="alert alert-<%= alertType %>">
           <%= message %>
       </div>
   <% } %>
-  <a href="/configure_iran_server" class="nav-button">پیکربندی سرور ایران ⚙️</a>
-  <a href="/configure_khaerj_server" class="nav-button">پیکربندی سرور خارج ⚙️</a>
-  <a href="/test_ping" class="nav-button">تست پینگ 📡</a>
-  <a href="/delete_tunnel_page" class="nav-button">حذف تونل 🗑</a>
-  <a href="/delete_netplan" class="nav-button">حذف پیکربندی Netplan 🗑</a>
-  <a href="/logout" class="nav-button">خروج 🔓</a>
+  <h3></h3>
+  <div class="button-container">
+    <a href="/configure_iran_server_page" class="menu-button">تانل سرور ایران 🇮🇷 </a>
+    <a href="/configure_khaerj_server_page" class="menu-button">تانل سرور خارج 🌍</a>
+    <a href="/configure_gost_page" class="menu-button">پیکربندی تانل گاست 👻</a>
+    <a href="/test_ping_page" class="menu-button">تست پینگ 📊</a>
+  </div>
+  <h3 class="operations-other">عملیات دیگر ⏬</h3>
+  <div class="button-container">
+    <a href="/delete_tunnel_page" class="menu-button btn-danger">حذف تانل 🗑</a>
+    <a href="/delete_netplan_page" class="menu-button btn-danger">حذف تنظیمات Netplan 🗑</a>
+  </div>
+  <a href="/logout" class="menu-button btn-danger">خـروج ⛔️</a>
 </div>
 </body>
 </html>
