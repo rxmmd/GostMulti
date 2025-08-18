@@ -908,9 +908,20 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/login.ejs" >/dev/null || { echo -e "${RED}F
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6to4 Tunnel Manager - Login</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>ورود به پنل</title>
 <style>
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -926,117 +937,163 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/login.ejs" >/dev/null || { echo -e "${RED}F
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif; 
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  .container {
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
-    position: relative;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
   }
 
   .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;
   }
 
   label {
-    margin-bottom: 10px;
     display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
   }
 
-  input.form-control {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+  input[type="text"],
+  input[type="password"] {
     width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
   }
 
-  button.btn-primary {
-    padding: 15px 30px;
-    background: rgba(138, 43, 226, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
-    margin-top: 20px;
+  input[type="text"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3);
   }
 
-  button.btn-primary:hover {
-    background: rgba(138, 43, 226, 0.5);
+  input[type="text"]::placeholder,
+  input[type="password"]::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
   }
 
   .alert {
-    margin-bottom: 30px;
-    padding: 15px;
-    border-radius: 10px;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
   }
 
-  @media (max-width: 768px) {
-    .main-container {
-      padding: 30px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
+  .alert-danger {
+    background: rgba(207, 102, 121, 0.2);
+    border-left: 4px solid var(--error-color);
+    color: var(--error-color);
+  }
+
+  footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  footer a {
+    color: var(--primary-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  footer a:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
   }
 </style>
 </head>
 <body>
-<div class="main-container">
-  <h2 style="margin-bottom: 30px;">ورود بـه پـنـل مـدیـریـت 💻</h2>
+
+<div class="container">
+  <h1>ورود به پنل</h1>
+  
   <% if (message) { %>
-      <div class="alert alert-danger">
-          نام کاربری یا رمز عبور اشتباه است ❌
-      </div>
+    <div class="alert alert-danger">
+        نام کاربری یا رمز عبور اشتباه است ❌
+    </div>
   <% } %>
+
   <form method="POST" action="/login">
-      <div class="form-group">
-          <label>نـام کـاربـری : 👤</label>
-          <input type="text" name="username" class="form-control" required>
-      </div>
-      <div class="form-group">
-          <label>پـسـوورد : 🔑</label>
-          <input type="password" name="password" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-primary">ورود 📲</button>
+    <div class="form-group">
+      <label for="username">نام کاربری:</label>
+      <input type="text" id="username" name="username" placeholder="نام کاربری خود را وارد کنید" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="password">رمز عبور:</label>
+      <input type="password" id="password" name="password" placeholder="رمز عبور خود را وارد کنید" required>
+    </div>
+
+    <button type="submit">ورود</button>
   </form>
 </div>
+
 </body>
 </html>
+
+
 EOF
 
     # Create index EJS template
@@ -1048,9 +1105,21 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/index.ejs" >/dev/null || { echo -e "${RED}F
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>6to4 Tunnel Manager</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
-  /* Custom Font: Vazirmatn */
+ 
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
+ 
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -1066,47 +1135,50 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/index.ejs" >/dev/null || { echo -e "${RED}F
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif; 
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    max-width: 600px;
-    width: 100%;
+    width: 90%;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
-    position: relative;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+  }
+
+  h3 {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    color: var(--primary-light);
   }
 
   .button-container {
@@ -1121,7 +1193,6 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/index.ejs" >/dev/null || { echo -e "${RED}F
     padding: 18px 35px;
     font-size: 1.1rem;
     border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(20px) saturate(150%);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
@@ -1133,7 +1204,9 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/index.ejs" >/dev/null || { echo -e "${RED}F
     width: 100%;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+    border: none;
+    text-decoration: none; 
   }
 
   .menu-button::before {
@@ -1162,7 +1235,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/index.ejs" >/dev/null || { echo -e "${RED}F
 
   .menu-button:focus {
     border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 0 4px rgba(138, 43, 226, 0.3), 0 8px 30px rgba(138, 43, 226, 0.2);
+    box-shadow: none;
   }
 
   .menu-button.btn-danger {
@@ -1173,19 +1246,22 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/index.ejs" >/dev/null || { echo -e "${RED}F
     background: rgba(220, 53, 69, 0.5);
   }
 
-  h1 {
-    margin-bottom: 30px;
+  footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
   }
 
-  h3 {
-    margin-bottom: 15px;
-    margin-top: 30px;
-    font-weight: bold;
+  footer a {
+    color: var(--primary-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
   }
 
-  .operations-other {
-    font-size: 1.2rem;
-    font-weight: bolder;
+  footer a:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
   }
 
   .alert {
@@ -1208,24 +1284,27 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/index.ejs" >/dev/null || { echo -e "${RED}F
 </head>
 <body>
 <div class="main-container">
-  <h1>تـانـل گـاسـت مـولـتـی لـوکـیـشـن 📡</h1>
+  <h1>تانل گاست مولتی لوکیشن
+  
   <% if (message) { %>
-      <div class="alert alert-<%= alertType %>">
-          <%= message %>
-      </div>
+    <div class="alert alert-<%= alertType %>">
+        <%= message %>
+    </div>
   <% } %>
-  <h3></h3>
+
   <div class="button-container">
-    <a href="/configure_iran_server_page" class="menu-button">تانل سرور ایران 🇮🇷 </a>
-    <a href="/configure_khaerj_server_page" class="menu-button">تانل سرور خارج 🌍</a>
-    <a href="/configure_gost_page" class="menu-button">پیکربندی تانل گاست 👻</a>
-    <a href="/test_ping_page" class="menu-button">تست پینگ 📊</a>
+    <a href="/configure_iran_server_page" class="menu-button">پیکربندی سرور ایران
+    <a href="/configure_khaerj_server_page" class="menu-button">پیکربندی سرور خارج
+    <a href="/configure_gost_page" class="menu-button">پیکربندی تانل گاست </a>
+    <a href="/test_ping_page" class="menu-button">تست پینگ </a>
   </div>
-  <h3 class="operations-other">عملیات دیگر ⏬</h3>
+
+  <h3>عملیات دیگر ⏬</h3>
   <div class="button-container">
-    <a href="/delete_tunnel_page" class="menu-button btn-danger">حذف تانل 🗑</a>
-    <a href="/delete_netplan_page" class="menu-button btn-danger">حذف تنظیمات Netplan 🗑</a>
+    <a href="/delete_tunnel_page" class="menu-button btn-danger">حذف پیکربندی</a>
+    <a href="/delete_netplan_page" class="menu-button btn-danger">حذف پیکربندی Netplan </a>
   </div>
+
   <a href="/logout" class="menu-button btn-danger">خـروج ⛔️</a>
 </div>
 </body>
@@ -1241,8 +1320,19 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/configure_iran_server.ejs" >/dev/null || { 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Configure Iran Server</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -1258,77 +1348,96 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/configure_iran_server.ejs" >/dev/null || { 
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
-    position: relative;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
   }
 
   .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;
   }
 
   label {
-    margin-bottom: 10px;
     display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
   }
 
   input.form-control {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
     width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  input.form-control:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3);
+  }
+
+  input.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.3);
   }
 
   button.btn-primary {
-    padding: 15px 30px;
-    background: rgba(138, 43, 226, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
-    margin-top: 20px;
+    padding: 1rem 2rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
   }
 
   button.btn-primary:hover {
-    background: rgba(138, 43, 226, 0.5);
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
   }
 
   .back-button {
@@ -1346,6 +1455,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/configure_iran_server.ejs" >/dev/null || { 
     margin-bottom: 20px;
     display: inline-block;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none; 
   }
 
   .back-button:hover {
@@ -1407,7 +1517,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/configure_iran_server.ejs" >/dev/null || { 
           <label>ساب‌نت IPv6 نمونه : fde6:84c6:1887::/64 </label>
           <input type="text" name="ipv6_subnet" class="form-control" required>
       </div>
-      <button type="submit" class="btn btn-primary">ارسـال 📤</button>
+      <button type="submit" class="btn btn-primary">ارسال</button>
   </form>
 </div>
 </body>
@@ -1424,8 +1534,19 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/configure_khaerj_server.ejs" >/dev/null || 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Configure Khaerj Server</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -1441,77 +1562,96 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/configure_khaerj_server.ejs" >/dev/null || 
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
-    position: relative;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
   }
 
   .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;
   }
 
   label {
-    margin-bottom: 10px;
     display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
   }
 
   input.form-control {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
     width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  input.form-control:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3);
+  }
+
+  input.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.3);
   }
 
   button.btn-primary {
-    padding: 15px 30px;
-    background: rgba(138, 43, 226, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
-    margin-top: 20px;
+    padding: 1rem 2rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
   }
 
   button.btn-primary:hover {
-    background: rgba(138, 43, 226, 0.5);
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
   }
 
   .back-button {
@@ -1529,6 +1669,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/configure_khaerj_server.ejs" >/dev/null || 
     margin-bottom: 20px;
     display: inline-block;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
   }
 
   .back-button:hover {
@@ -1583,11 +1724,12 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/configure_khaerj_server.ejs" >/dev/null || 
           <label>ساب‌نت IPv6 نمونه : fde6:84c6:1887::/64 </label>
           <input type="text" name="ipv6_subnet" class="form-control" required>
       </div>
-      <button type="submit" class="btn btn-primary">ارسـال 📤</button>
+      <button type="submit" class="btn btn-primary">ارسال</button>
   </form>
 </div>
 </body>
 </html>
+
 EOF
 
     # Create gost EJS template
@@ -1599,9 +1741,19 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/gost.ejs" >/dev/null || { echo -e "${RED}Fa
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gost Tunnel Configuration</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
-  /* Custom Font: Vazirmatn */
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -1617,47 +1769,499 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/gost.ejs" >/dev/null || { echo -e "${RED}Fa
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+
+  .menu-button {
+    padding: 18px 35px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    text-align: center;
+    width: 100%;
     position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none; 
+  }
+
+  .menu-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s;
+  }
+
+  .menu-button:hover::before,
+  .menu-button.active::before {
+    left: 100%;
+  }
+
+  .menu-button:hover,
+  .menu-button.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(138, 43, 226, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .menu-button:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 4px rgba(138, 43, 226, 0.3), 0 8px 30px rgba(138, 43, 226, 0.2);
+  }
+
+  .menu-button.btn-danger {
+    background: rgba(220, 53, 69, 0.3);
+  }
+
+  .menu-button.btn-danger:hover {
+    background: rgba(220, 53, 69, 0.5);
+  }
+
+  .back-button {
+    padding: 14px 28px;
+    font-size: 1rem;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(138, 43, 226, 0.15);
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    margin-bottom: 20px;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+  }
+
+  .back-button:hover {
+    background: rgba(138, 43, 226, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .alert {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .main-container {
+      padding: 25px;
+    }
+    .menu-button {
+      padding: 15px 25px;
+      font-size: 1rem;
+      border-radius: 25px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="main-container">
+  <a href="/" class="back-button">بازگشت به صحفه اصلی 🔙</a>
+  <% if (message) { %>
+      <div class="alert alert-<%= alertType %>">
+          <%= message %>
+      </div>
+  <% } %>
+  <div class="button-container">
+    <a href="/install_gost_page" class="menu-button">نصب تانل گاست </a>
+    <a href="/gost_status_page" class="menu-button">وضعیت تانل گاست </a>
+    <a href="/add_new_ipv6_page" class="menu-button">افزودن IPv6 جدید </a>
+    <a href="/restart_tunnel_page" class="menu-button">راه‌اندازی مجدد تانل </a>
+    <a href="/uninstall_gost_page" class="menu-button btn-danger">حذف تانل گاست </a>
+  </div>
+</div>
+</body>
+</html>
+EOF
+
+    # Create install_gost EJS template
+
+# Replace the entire cat <<EOF block for "$TEMPLATES_DIR/install_gost.ejs" with this:
+# Replace the entire cat <<EOF block for "$TEMPLATES_DIR/install_gost.ejs" with this:
+
+# Replace the entire cat <<EOF block for "$TEMPLATES_DIR/install_gost.ejs" with this in install2.sh:
+cat <<'EOF' | sudo tee "$TEMPLATES_DIR/install_gost.ejs" >/dev/null || { echo -e "${RED}Failed to create install_gost.ejs${NC}"; exit 1; }
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install Gost</title>
+<style>
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
+  body {
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    direction: rtl;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
+  }
+
+  .main-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  input.form-control {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  input.form-control:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3);
+  }
+
+  input.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  select.form-control {
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--surface-dark); 
+    color: var(--text-primary);
+    font-size: 1rem;
+    appearance: none;
+    background-image: none;
+  }
+
+  button.btn-primary {
+    padding: 1rem 2rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  button.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+  }
+
+  .back-button {
+    padding: 14px 28px;
+    font-size: 1rem;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(138, 43, 226, 0.15);
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    margin-bottom: 20px;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+  }
+
+  .back-button:hover {
+    background: rgba(138, 43, 226, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .alert {
+    margin-bottom: 30px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .main-container {
+      padding: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="main-container">
+  <a href="/gost" class="back-button">بازگشت به صحفه پیکربندی 🔙</a>
+  <% if (message) { %>
+      <div class="alert alert-<%= alertType %>">
+          <%= message %>
+      </div>
+  <% } %>
+  <form method="POST" action="/install_gost">
+      <div class="form-group">
+          <label>وارد کردن ipv6 لوکال پنل ( جهت مولتی لوکیشن با کاما وارد کنید )</label>
+          <input type="text" name="panel_ips" class="form-control" required>
+      </div>
+      <div class="form-group">
+          <label>پورت‌ پنل ( جهت مولتی لوکیشن بودن با کاما وارد کنید )</label>
+          <input type="text" name="panel_ports" class="form-control" required>
+      </div>
+      <div class="form-group">
+          <label>وارد کردن ipv6 لوکال اینباند / کانفیگ ( جهت مولتی لوکیشن با کاما وارد کنید )</label>
+          <input type="text" name="inbound_ips" class="form-control">
+      </div>
+      <div class="form-group">
+          <label>پورت‌های کانفیگ / اینباند (جهت مولتی لوکیشن بودن با کاما وارد کنید)</label>
+          <input type="text" name="inbound_ports" class="form-control">
+      </div>
+      <div class="form-group">
+          <label>پروتکل :</label>
+          <select name="protocol_option" class="form-control" required onchange="this.style.color = '#ffffff'; this.selectedOptions[0].style.color = '#ffffff';">
+              <option value="1" selected>TCP</option>
+              <option value="2">UDP</option>
+              <option value="3">هر دو TCP و UDP</option>
+          </select>
+      </div>
+      <button type="submit" class="btn btn-primary">نصب</button>
+  </form>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const panelIpInput = document.querySelector('input[name="panel_ips"]');
+        const form = document.querySelector('form');
+
+        panelIpInput.addEventListener('input', function() {
+            let panel_ips = this.value.split(',').filter(ip => ip.trim());
+            let existingRandomGroups = form.querySelectorAll('.form-group');
+            existingRandomGroups.forEach(group => {
+                if (group.querySelector('label') && group.querySelector('label').textContent.startsWith(' یک پورت رندوم وارد کنید ')) {
+                    group.remove();
+                }
+            });
+            panel_ips.forEach((ip, i) => {
+                if (ip.trim()) {
+                    let div = document.createElement('div');
+                    div.className = 'form-group';
+                    div.innerHTML = "<label> یک پورت رندوم وارد کنید " + ip.trim() + ":</label><input type='number' name='panel_random_port_" + i + "' class='form-control' min='1' max='65535' required>";
+                    form.insertBefore(div, form.querySelector('button'));
+                }
+            });
+        });
+    });
+  </script>
+</div>
+</body>
+</html>
+EOF
+
+    # Create gost_status EJS template
+
+# Replace the entire cat <<EOF block for "$TEMPLATES_DIR/gost_status.ejs" with this:
+cat <<EOF | sudo tee "$TEMPLATES_DIR/gost_status.ejs" >/dev/null || { echo -e "${RED}Failed to create gost_status.ejs${NC}"; exit 1; }
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gost Status</title>
+<style>
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Vazirmatn";
+    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
+  body {
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    direction: rtl;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
+  }
+
+  .main-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
   }
 
   .button-container {
@@ -1736,379 +2340,10 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/gost.ejs" >/dev/null || { echo -e "${RED}Fa
     cursor: pointer;
     transition: all 0.3s ease;
     outline: none;
-    margin-bottom: 20px;
-    display: inline-block;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-
-  .back-button:hover {
-    background: rgba(138, 43, 226, 0.25);
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  .alert {
-    margin-bottom: 20px;
-    padding: 15px;
-    border-radius: 10px;
-  }
-
-  @media (max-width: 768px) {
-    .main-container {
-      padding: 25px;
-    }
-    .menu-button {
-      padding: 15px 25px;
-      font-size: 1rem;
-      border-radius: 25px;
-    }
-  }
-</style>
-</head>
-<body>
-<div class="main-container">
-  <a href="/" class="back-button">بازگشت به صحفه اصلی 🔙</a>
-  <% if (message) { %>
-      <div class="alert alert-<%= alertType %>">
-          <%= message %>
-      </div>
-  <% } %>
-  <div class="button-container">
-    <a href="/install_gost_page" class="menu-button">نصب تانل گاست 👻</a>
-    <a href="/gost_status_page" class="menu-button">وضعیت تانل گاست ⁉️</a>
-    <a href="/add_new_ipv6_page" class="menu-button">افزودن IPv6 جدید ➕</a>
-    <a href="/restart_tunnel_page" class="menu-button">راه‌اندازی مجدد تانل ♻️</a>
-    <a href="/uninstall_gost_page" class="menu-button btn-danger">حذف تانل گاست 🗑</a>
-  </div>
-</div>
-</body>
-</html>
-EOF
-
-    # Create install_gost EJS template
-
-# Replace the entire cat <<EOF block for "$TEMPLATES_DIR/install_gost.ejs" with this:
-# Replace the entire cat <<EOF block for "$TEMPLATES_DIR/install_gost.ejs" with this:
-
-# Replace the entire cat <<EOF block for "$TEMPLATES_DIR/install_gost.ejs" with this in install2.sh:
-cat <<'EOF' | sudo tee "$TEMPLATES_DIR/install_gost.ejs" >/dev/null || { echo -e "${RED}Failed to create install_gost.ejs${NC}"; exit 1; }
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Install Gost</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-  @font-face {
-    font-family: "Vazirmatn";
-    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Vazirmatn";
-    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  body {
-    font-family: "Vazirmatn", sans-serif;
-    direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    max-width: 600px;
-    width: 100%;
-    text-align: center;
-    position: relative;
-  }
-
-  .form-group {
-    margin-bottom: 30px;
-  }
-
-  label {
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  input.form-control {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    width: 100%;
-  }
-
-  select.form-control {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    width: 100%;
-    appearance: none;
-    background-image: none;
-  }
-
-  select.form-control option {
-    background: #2a1a3d;
-    color: #e0e0e0;
-  }
-
-  button.btn-primary {
-    padding: 15px 30px;
-    background: rgba(138, 43, 226, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
-    margin-top: 20px;
-  }
-
-  button.btn-primary:hover {
-    background: rgba(138, 43, 226, 0.5);
-  }
-
-  .back-button {
-    padding: 14px 28px;
-    font-size: 1rem;
-    border-radius: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(138, 43, 226, 0.15);
-    backdrop-filter: blur(15px) saturate(150%);
-    -webkit-backdrop-filter: blur(15px) saturate(150%);
-    color: #ffffff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    outline: none;
-    margin-bottom: 20px;
-    display: inline-block;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-
-  .back-button:hover {
-    background: rgba(138, 43, 226, 0.25);
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  .alert {
-    margin-bottom: 30px;
-    padding: 15px;
-    border-radius: 10px;
-  }
-
-  @media (max-width: 768px) {
-    .main-container {
-      padding: 30px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-  }
-</style>
-</head>
-<body>
-<div class="main-container">
-  <a href="/gost" class="back-button">بازگشت به صحفه پیکربندی 🔙</a>
-  <% if (message) { %>
-      <div class="alert alert-<%= alertType %>">
-          <%= message %>
-      </div>
-  <% } %>
-  <form method="POST" action="/install_gost">
-      <div class="form-group">
-          <label>وارد کردن ipv6 لوکال پنل ( جهت مولتی لوکیشن با کاما وارد کنید )</label>
-          <input type="text" name="panel_ips" class="form-control" required>
-      </div>
-      <div class="form-group">
-          <label>پورت‌ پنل ( جهت مولتی لوکیشن بودن با کاما وارد کنید )</label>
-          <input type="text" name="panel_ports" class="form-control" required>
-      </div>
-      <div class="form-group">
-          <label>وارد کردن ipv6 لوکال اینباند / کانفیگ ( جهت مولتی لوکیشن با کاما وارد کنید )</label>
-          <input type="text" name="inbound_ips" class="form-control">
-      </div>
-      <div class="form-group">
-          <label>پورت‌های کانفیگ / اینباند (جهت مولتی لوکیشن بودن با کاما وارد کنید)</label>
-          <input type="text" name="inbound_ports" class="form-control">
-      </div>
-      <div class="form-group">
-          <label>پروتکل :</label>
-          <select name="protocol_option" class="form-control" required onchange="this.style.color = '#ffffff'; this.selectedOptions[0].style.color = '#ffffff';">
-              <option value="1" selected>TCP</option>
-              <option value="2">UDP</option>
-              <option value="3">هر دو TCP و UDP</option>
-          </select>
-      </div>
-      <button type="submit" class="btn btn-primary">نـصـب 📲</button>
-  </form>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const panelIpInput = document.querySelector('input[name="panel_ips"]');
-        const form = document.querySelector('form');
-
-        panelIpInput.addEventListener('input', function() {
-            let panel_ips = this.value.split(',').filter(ip => ip.trim());
-            let existingRandomGroups = form.querySelectorAll('.form-group');
-            existingRandomGroups.forEach(group => {
-                if (group.querySelector('label') && group.querySelector('label').textContent.startsWith(' یک پورت رندوم وارد کنید ')) {
-                    group.remove();
-                }
-            });
-            panel_ips.forEach((ip, i) => {
-                if (ip.trim()) {
-                    let div = document.createElement('div');
-                    div.className = 'form-group';
-                    div.innerHTML = "<label> یک پورت رندوم وارد کنید " + ip.trim() + ":</label><input type='number' name='panel_random_port_" + i + "' class='form-control' min='1' max='65535' required>";
-                    form.insertBefore(div, form.querySelector('button'));
-                }
-            });
-        });
-    });
-  </script>
-</body>
-</html>
-EOF
-
-    # Create gost_status EJS template
-
-# Replace the entire cat <<EOF block for "$TEMPLATES_DIR/gost_status.ejs" with this:
-cat <<EOF | sudo tee "$TEMPLATES_DIR/gost_status.ejs" >/dev/null || { echo -e "${RED}Failed to create gost_status.ejs${NC}"; exit 1; }
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gost Status</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-  /* Custom Font: Vazirmatn */
-  @font-face {
-    font-family: "Vazirmatn";
-    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Vazirmatn";
-    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  body {
-    font-family: "Vazirmatn", sans-serif;
-    direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    max-width: 600px;
-    width: 100%;
-    text-align: center;
-    position: relative;
-  }
-
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  button.btn-primary {
-    padding: 12px 25px;
-    background: rgba(138, 43, 226, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
-  }
-
-  button.btn-primary:hover {
-    background: rgba(138, 43, 226, 0.5);
-  }
-
-  .back-button {
-    padding: 14px 28px;
-    font-size: 1rem;
-    border-radius: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(138, 43, 226, 0.15);
-    backdrop-filter: blur(15px) saturate(150%);
-    -webkit-backdrop-filter: blur(15px) saturate(150%);
-    color: #ffffff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    outline: none;
     margin-bottom: 40px;
     display: inline-block;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
   }
 
   .back-button:hover {
@@ -2154,11 +2389,12 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/gost_status.ejs" >/dev/null || { echo -e "$
       <p class="status-text">برای بررسی وضعیت، روی دکمه زیر کلیک کنید.</p>
   <% } %>
   <form method="POST" action="/gost_status">
-      <button type="submit" class="btn btn-primary">بررسی وضعیت 🔍</button>
+      <button type="submit" class="menu-button">بررسی وضعیت 🔍</button>
   </form>
 </div>
 </body>
 </html>
+
 EOF
 
     # Create add_new_ipv6 EJS template
@@ -2171,9 +2407,19 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/add_new_ipv6.ejs" >/dev/null || { echo -e "
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Add New IPv6</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
-  /* Custom Font: Vazirmatn */
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -2189,55 +2435,52 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/add_new_ipv6.ejs" >/dev/null || { echo -e "
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
-    position: relative;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
   }
 
   .form-group {
-    margin-bottom: 50px; /* افزایش فاصله بین متن‌ها */
+    margin-bottom: 50px; 
   }
 
   label {
-    margin-bottom: 20px; /* افزایش فاصله زیر متن‌های لیبل */
+    margin-bottom: 20px; 
     display: block;
   }
 
@@ -2265,17 +2508,60 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/add_new_ipv6.ejs" >/dev/null || { echo -e "
     color: #e0e0e0;
   }
 
-  button.btn-primary {
-    padding: 15px 30px;
-    background: rgba(138, 43, 226, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
-    margin-top: 40px;
-    margin-bottom: 50px;
+  .menu-button {
+    padding: 18px 35px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  button.btn-primary:hover {
-    background: rgba(138, 43, 226, 0.5);
+  .menu-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s;
+  }
+
+  .menu-button:hover::before,
+  .menu-button.active::before {
+    left: 100%;
+  }
+
+  .menu-button:hover,
+  .menu-button.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(138, 43, 226, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .menu-button:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 4px rgba(138, 43, 226, 0.3), 0 8px 30px rgba(138, 43, 226, 0.2);
+  }
+
+  .menu-button.btn-danger {
+    background: rgba(220, 53, 69, 0.3);
+  }
+
+  .menu-button.btn-danger:hover {
+    background: rgba(220, 53, 69, 0.5);
   }
 
   .back-button {
@@ -2293,6 +2579,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/add_new_ipv6.ejs" >/dev/null || { echo -e "
     margin-bottom: 40px;
     display: inline-block;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
   }
 
   .back-button:hover {
@@ -2356,7 +2643,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/add_new_ipv6.ejs" >/dev/null || { echo -e "
               <option value="udp">UDP</option>
           </select>
       </div>
-      <button type="submit" class="btn btn-primary">افزودن پنل ➕</button>
+      <button type="submit" class="menu-button">افزودن پنل ➕</button>
   </form>
 
   <!-- Inbound Form -->
@@ -2376,7 +2663,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/add_new_ipv6.ejs" >/dev/null || { echo -e "
               <option value="udp">UDP</option>
           </select>
       </div>
-      <button type="submit" class="btn btn-primary">افزودن اینباند ➕</button>
+      <button type="submit" class="menu-button">افزودن اینباند ➕</button>
   </form>
 </div>
 </body>
@@ -2394,9 +2681,19 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/restart_tunnel.ejs" >/dev/null || { echo -e
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Restart Tunnel</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
-  /* Custom Font: Vazirmatn */
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -2412,58 +2709,108 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/restart_tunnel.ejs" >/dev/null || { echo -e
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+
+  .menu-button {
+    padding: 18px 35px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    text-align: center;
+    width: 100%;
     position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  button.btn-primary {
-    padding: 12px 25px;
-    background: rgba(138, 43, 226, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
+  .menu-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s;
   }
 
-  button.btn-primary:hover {
-    background: rgba(138, 43, 226, 0.5);
+  .menu-button:hover::before,
+  .menu-button.active::before {
+    left: 100%;
+  }
+
+  .menu-button:hover,
+  .menu-button.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(138, 43, 226, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .menu-button:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 4px rgba(138, 43, 226, 0.3), 0 8px 30px rgba(138, 43, 226, 0.2);
+  }
+
+  .menu-button.btn-danger {
+    background: rgba(220, 53, 69, 0.3);
+  }
+
+  .menu-button.btn-danger:hover {
+    background: rgba(220, 53, 69, 0.5);
   }
 
   .back-button {
@@ -2478,9 +2825,10 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/restart_tunnel.ejs" >/dev/null || { echo -e
     cursor: pointer;
     transition: all 0.3s ease;
     outline: none;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     display: inline-block;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
   }
 
   .back-button:hover {
@@ -2512,7 +2860,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/restart_tunnel.ejs" >/dev/null || { echo -e
       </div>
   <% } %>
   <form method="POST" action="/restart_tunnel">
-      <button type="submit" class="btn btn-primary">راه‌اندازی مجدد ♻️</button>
+      <button type="submit" class="menu-button">راه‌اندازی مجدد ♻️</button>
   </form>
 </div>
 </body>
@@ -2530,9 +2878,19 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/uninstall_gost.ejs" >/dev/null || { echo -e
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uninstall Gost</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
-  /* Custom Font: Vazirmatn */
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #000000;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -2548,58 +2906,108 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/uninstall_gost.ejs" >/dev/null || { echo -e
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+
+  .menu-button {
+    padding: 18px 35px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    text-align: center;
+    width: 100%;
     position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  button.btn-danger {
-    padding: 12px 25px;
-    background: rgba(220, 53, 69, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
+  .menu-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s;
   }
 
-  button.btn-danger:hover {
-    background: rgba(220, 53, 69, 0.5);
+  .menu-button:hover::before,
+  .menu-button.active::before {
+    left: 100%;
+  }
+
+  .menu-button:hover,
+  .menu-button.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(138, 43, 226, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .menu-button:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 4px rgba(138, 43, 226, 0.3), 0 8px 30px rgba(138, 43, 226, 0.2);
+  }
+
+  .menu-button.btn-success {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .menu-button.btn-success:hover {
+    background: rgba(0, 0, 0, 0.5); 
   }
 
   .back-button {
@@ -2614,9 +3022,10 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/uninstall_gost.ejs" >/dev/null || { echo -e
     cursor: pointer;
     transition: all 0.3s ease;
     outline: none;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     display: inline-block;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
   }
 
   .back-button:hover {
@@ -2630,6 +3039,45 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/uninstall_gost.ejs" >/dev/null || { echo -e
     margin-bottom: 20px;
     padding: 15px;
     border-radius: 10px;
+  }
+
+  .confirm-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .confirm-box {
+    background: var(--surface-dark);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: var(--text-primary);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .confirm-box button {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #ffffff;
+  }
+
+  .confirm-box .confirm-yes {
+    background-color: var(--success-color);
+  }
+
+  .confirm-box .confirm-no {
+    background-color: var(--error-color);
   }
 
   @media (max-width: 768px) {
@@ -2647,10 +3095,32 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/uninstall_gost.ejs" >/dev/null || { echo -e
           <%= message %>
       </div>
   <% } %>
-  <form method="POST" action="/uninstall_gost">
-      <button type="submit" class="btn btn-danger">حذف تانل گاست 🗑</button>
+  <form method="POST" action="/uninstall_gost" id="uninstallForm">
+      <button type="submit" class="menu-button btn-success" onclick="showConfirm(); return false;">حذف تانل گاست</button>
   </form>
 </div>
+
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <p>آیا مطمئن هستید که می‌خواهید تانل گاست را حذف کنید؟</p>
+    <button class="confirm-yes" onclick="submitForm()">بله</button>
+    <button class="confirm-no" onclick="hideConfirm()">خیر</button>
+  </div>
+</div>
+
+<script>
+  function showConfirm() {
+    document.getElementById('confirmOverlay').style.display = 'flex';
+  }
+
+  function hideConfirm() {
+    document.getElementById('confirmOverlay').style.display = 'none';
+  }
+
+  function submitForm() {
+    document.getElementById('uninstallForm').submit();
+  }
+</script>
 </body>
 </html>
 EOF
@@ -2665,8 +3135,19 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/test_ping_page.ejs" >/dev/null || { echo -e
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Test Ping</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -2682,77 +3163,96 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/test_ping_page.ejs" >/dev/null || { echo -e
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
-    position: relative;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
   }
 
   .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;
   }
 
   label {
-    margin-bottom: 10px;
     display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
   }
 
-  input.form-control {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+  input[type="text"] {
     width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
   }
 
-  button.btn-primary {
-    padding: 15px 30px;
-    background: rgba(138, 43, 226, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
-    margin-top: 20px;
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3);
   }
 
-  button.btn-primary:hover {
-    background: rgba(138, 43, 226, 0.5);
+  input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
   }
 
   .back-button {
@@ -2770,6 +3270,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/test_ping_page.ejs" >/dev/null || { echo -e
     margin-bottom: 20px;
     display: inline-block;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
   }
 
   .back-button:hover {
@@ -2780,39 +3281,52 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/test_ping_page.ejs" >/dev/null || { echo -e
   }
 
   .alert {
-    margin-bottom: 30px;
-    padding: 15px;
-    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    line-height: 1.5;
   }
 
   @media (max-width: 768px) {
     .main-container {
-      padding: 30px;
+      padding: 1.5rem;
     }
-    .form-group {
-      margin-bottom: 20px;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    input[type="text"],
+    button {
+      padding: 0.7rem;
     }
   }
 </style>
 </head>
 <body>
+
 <div class="main-container">
   <a href="/" class="back-button">بازگشت به صحفه اصلی 🔙</a>
+  
   <% if (message) { %>
-      <div class="alert alert-<%= alertType %>">
-          <%= message %>
-      </div>
+    <div class="alert alert-<%= alertType %>">
+      <%= message %>
+    </div>
   <% } %>
+
   <form method="POST" action="/test_ping">
-      <div class="form-group">
-          <label>آدرس ipv6  برای تست پـیـنـگ نمونه : fde6:84c6:1887::1</label>
-          <input type="text" name="ping_address" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-primary">تـسـت پـیـنـگ</button>
+    <div class="form-group">
+      <label for="ping_address">آدرس ipv6 برای تست پـیـنـگ نمونه : fde6:84c6:1887::1</label>
+      <input type="text" id="ping_address" name="ping_address" class="form-control" required>
+    </div>
+    
+    <button type="submit">تست پینگ</button>
   </form>
 </div>
+
 </body>
 </html>
+
 EOF
 
     # Create delete_tunnel EJS template
@@ -2824,8 +3338,19 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/delete_tunnel_page.ejs" >/dev/null || { ech
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Delete Tunnel</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -2841,79 +3366,91 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/delete_tunnel_page.ejs" >/dev/null || { ech
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
-    position: relative;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
   }
 
   .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;
   }
 
- select.form-control {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  select.form-control {
     width: 100%;
-    appearance: none;
-    background-image: none;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
   }
 
   select.form-control option {
-    background: #2a1a3d;
-    color: #e0e0e0;
+    background-color: #000000; 
+    color: var(--text-primary);
   }
 
-  button.btn-danger {
-    padding: 15px 30px;
-    background: rgba(220, 53, 69, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
-    margin-top: 20px;
+  button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
   }
 
-  button.btn-danger:hover {
-    background: rgba(220, 53, 69, 0.5);
+  button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
   }
 
   .back-button {
@@ -2931,6 +3468,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/delete_tunnel_page.ejs" >/dev/null || { ech
     margin-bottom: 20px;
     display: inline-block;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
   }
 
   .back-button:hover {
@@ -2941,41 +3479,53 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/delete_tunnel_page.ejs" >/dev/null || { ech
   }
 
   .alert {
-    margin-bottom: 30px;
-    padding: 15px;
-    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    line-height: 1.5;
   }
 
   @media (max-width: 768px) {
     .main-container {
-      padding: 30px;
+      padding: 1.5rem;
     }
-    .form-group {
-      margin-bottom: 20px;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    select.form-control,
+    button {
+      padding: 0.7rem;
     }
   }
 </style>
 </head>
 <body>
+
 <div class="main-container">
   <a href="/" class="back-button">بازگشت به صحفه اصلی 🔙</a>
+
   <% if (message) { %>
-      <div class="alert alert-<%= alertType %>">
-          <%= message %>
-      </div>
+    <div class="alert alert-<%= alertType %>">
+      <%= message %>
+    </div>
   <% } %>
+
   <form method="POST" action="/delete_tunnel">
-      <div class="form-group">
-          <label>انتخاب تـانـل برای حـذف : </label>
-          <select name="tunnel_name" class="form-control" required>
-              <% tunnels.forEach(tunnel => { %>
-                  <option value="<%= tunnel %>"><%= tunnel %></option>
-              <% }); %>
-          </select>
-      </div>
-      <button type="submit" class="btn btn-danger">حـذف تـانل 🗑</button>
+    <div class="form-group">
+      <label for="tunnel_name">انتخاب تانل برای حذف:</label>
+      <select name="tunnel_name" class="form-control" required>
+        <% tunnels.forEach(tunnel => { %>
+          <option value="<%= tunnel %>"><%= tunnel %></option>
+        <% }); %>
+      </select>
+    </div>
+
+    <button type="submit">حذف تانل</button>
   </form>
 </div>
+
 </body>
 </html>
 EOF
@@ -2989,9 +3539,19 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/delete_netplan.ejs" >/dev/null || { echo -e
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Delete Netplan Configuration</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
-  /* Custom Font: Vazirmatn */
+  :root {
+    --primary-color: #9c27b0;
+    --primary-light: #bb86fc;
+    --primary-dark: #6a0dad;
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --error-color: #cf6679;
+    --success-color: #03dac6;
+  }
+
   @font-face {
     font-family: "Vazirmatn";
     src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
@@ -3007,78 +3567,91 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/delete_netplan.ejs" >/dev/null || { echo -e
     font-display: swap;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Vazirmatn", "Tahoma", sans-serif;
+  }
+
   body {
-    font-family: "Vazirmatn", sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
     direction: rtl;
-    background: #2a1a3d;
-    background-attachment: fixed;
-    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    background-image: radial-gradient(circle at 10% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 30%), radial-gradient(circle at 90% 80%, rgba(106, 13, 173, 0.3) 0%, transparent 30%);
+    background-attachment: fixed;
   }
 
   .main-container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  h1 {
+    color: var(--primary-light);
     text-align: center;
-    position: relative;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
   }
 
   .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
   }
 
- select.form-control {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  select.form-control {
     width: 100%;
-    appearance: none;
-    background-image: none;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
   }
 
   select.form-control option {
-    background: #2a1a3d;
-    color: #e0e0e0;
+    background-color: #000000; 
+    color: var(--text-primary);
   }
 
-  button.btn-danger {
-    padding: 12px 25px;
-    background: rgba(220, 53, 69, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s;
+  button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
   }
 
-  button.btn-danger:hover {
-    background: rgba(220, 53, 69, 0.5);
+  button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
   }
 
   .back-button {
@@ -3096,6 +3669,7 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/delete_netplan.ejs" >/dev/null || { echo -e
     margin-bottom: 20px;
     display: inline-block;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-decoration: none;
   }
 
   .back-button:hover {
@@ -3106,38 +3680,53 @@ cat <<EOF | sudo tee "$TEMPLATES_DIR/delete_netplan.ejs" >/dev/null || { echo -e
   }
 
   .alert {
-    margin-bottom: 20px;
-    padding: 15px;
-    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    line-height: 1.5;
   }
 
   @media (max-width: 768px) {
     .main-container {
-      padding: 25px;
+      padding: 1.5rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    select.form-control,
+    button {
+      padding: 0.7rem;
     }
   }
 </style>
 </head>
 <body>
+
 <div class="main-container">
   <a href="/" class="back-button">بازگشت به صحفه اصلی 🔙</a>
+
   <% if (message) { %>
-      <div class="alert alert-<%= alertType %>">
-          <%= message %>
-      </div>
+    <div class="alert alert-<%= alertType %>">
+      <%= message %>
+    </div>
   <% } %>
+
   <form method="POST" action="/delete_netplan">
-      <div class="form-group">
-          <label>انتخاب فایل نـت پـلـن : </label>
-          <select name="netplan_file" class="form-control" required>
-              <% netplans.forEach(netplan => { %>
-                  <option value="<%= netplan %>"><%= netplan %></option>
-              <% }); %>
-          </select>
-      </div>
-      <button type="submit" class="btn btn-danger">حـذف 🗑</button>
+    <div class="form-group">
+      <label for="netplan_file"> انتخاب فایل نت پلن برای حذف </label>
+      <select name="netplan_file" class="form-control" required>
+        <% netplans.forEach(netplan => { %>
+          <option value="<%= netplan %>"><%= netplan %></option>
+        <% }); %>
+      </select>
+    </div>
+
+    <button type="submit">حذف نت پلن</button>
   </form>
 </div>
+
 </body>
 </html>
 EOF
