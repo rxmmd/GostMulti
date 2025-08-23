@@ -3936,11 +3936,6 @@ uninstall_application() {
     sudo rm -f /usr/local/bin/move_gost_service.sh 2>/dev/null || echo -e "${RED}Failed to remove move_gost_service.sh${NC}"
     sudo rm -f /usr/bin/auto_restart_cronjob.sh 2>/dev/null || echo -e "${RED}Failed to remove auto_restart_cronjob.sh${NC}"
 
-    # Remove netplan configurations
-    echo -e "${GREEN}Removing netplan configurations...${NC}"
-    sudo rm -f /etc/netplan/*-netcfg.yaml 2>/dev/null || echo -e "${RED}Failed to remove netplan files${NC}"
-    sudo netplan apply 2>/dev/null || echo -e "${RED}Failed to apply netplan${NC}"
-
     # Remove cron jobs related to auto-restart and cache clearing
     echo -e "${GREEN}Removing cron jobs...${NC}"
     crontab -l 2>/dev/null | grep -v '/usr/bin/auto_restart_cronjob.sh' | crontab - 2>/dev/null || echo -e "${RED}Failed to remove auto-restart cron job${NC}"
